@@ -63,4 +63,111 @@ Database: MySQL
 Frontend: HTML, CSS, JavaScript, Bootstrap 5
 Development Tools: XAMPP (Apache, MySQL), VS Code, Git, GitHub
 
+Setup Instructions
+To get the Personal Task Manager Pro up and running on your local machine, follow these steps:
+
+Install XAMPP:
+
+Download and install XAMPP (or WAMP/MAMP) from apachefriends.org.
+Ensure Apache and MySQL services are running via the XAMPP Control Panel.
+Clone the Repository:
+
+Open your Git Bash or terminal.
+Navigate to your XAMPP's htdocs directory (e.g., cd C:\xampp\htdocs\).
+Clone this repository:
+Bash
+
+git clone https://github.com/gorselguler/Personal_Task_Manager_Pro.git
+This will create a Personal_Task_Manager_Pro folder inside htdocs.
+Configure php.ini:
+
+Open your XAMPP Control Panel.
+Click "Config" next to Apache, then select "PHP (php.ini)".
+Find and uncomment (remove the semicolon ;) the following lines:
+Ini, TOML
+
+extension=pdo_mysql
+extension=mysqli
+Save and close php.ini.
+Restart Apache from the XAMPP Control Panel.
+Configure Database Connection (config.php):
+
+Open Personal_Task_Manager_Pro/config.php in your code editor.
+Verify or update the database connection constants if necessary (default XAMPP settings usually work):
+
+'''php
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'task_manager_pro');
+define('DB_USER', 'root');
+define('DB_PASS', ''); // Usually empty for XAMPP root user
+Create Database and Tables:
+
+Open your web browser and go to http://localhost/phpmyadmin/.
+Click on "Databases" and create a new database named task_manager_pro.
+Select the task_manager_pro database from the left sidebar.
+Go to the "SQL" tab and paste the following SQL commands to create the necessary tables and populate with test data:
+
+'''sql
+
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at DATETIME DEFAULT NOW()
+);
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE (user_id, name)
+);
+
+CREATE TABLE tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    category_id INT NULL,
+    title VARCHAR(100) NOT NULL,
+    description TEXT,
+    priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
+    due_date DATETIME NULL,
+    status ENUM('todo', 'in_progress', 'done') DEFAULT 'todo',
+    created_at DATETIME DEFAULT NOW(),
+    completed_at DATETIME NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+);
+'''
+
+Usage Guide
+Access the Application:
+
+Open your web browser and navigate to: http://localhost/Personal_Task_Manager_Pro/public/
+
+Login:
+Use the provided demo credentials:
+
+Username: mr.poplawski
+
+Password: Test123
+
+Alternatively, click "Register here" to create a new account.
+
+Explore Features:
+
+Add, edit, delete tasks.
+Change task statuses.
+Manage categories.
+Search and filter tasks.
+View reports.
+Sort task list.
+
 
