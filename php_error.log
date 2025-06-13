@@ -1,0 +1,2 @@
+[13-Jun-2025 18:48:45 Europe/Berlin] PHP Warning:  Undefined array key "due_date_time" in C:\xampp\htdocs\Task_Manager\controllers\TaskController.php on line 124
+[13-Jun-2025 18:48:45 Europe/Berlin] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Task_Manager\controllers\TaskController.php on line 124
